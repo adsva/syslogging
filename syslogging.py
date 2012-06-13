@@ -38,7 +38,8 @@ logger = logging.getLogger('exception')
 
 def log_exception(cls, val, tb, logger=logger):
     logger.error('Exception:')
-    for line in ''.join(traceback.format_tb(tb)).rstrip().split('\n'):
+    exc = ''.join(traceback.format_exception(cls, val, tb))
+    for line in exc.rstrip().split('\n'):
         logger.error(line)
     sys.__excepthook__(cls, val, tb)
 
