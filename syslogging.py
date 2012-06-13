@@ -1,5 +1,6 @@
 import sys
 import logging
+import traceback
 from logging.config import dictConfig
 
 syslog_cfg = {
@@ -36,7 +37,9 @@ dictConfig(syslog_cfg)
 logger = logging.getLogger('exception')
 
 def log_exception(cls, val, tb, logger=logger):
-    logger.error(val)
+    logger.error('Exception:')
+    for line in ''.join(traceback.format_tb(tb)).rstrip().split('\n'):
+        logger.error(line)
     sys.__excepthook__(cls, val, tb)
 
 sys.excepthook = log_exception
